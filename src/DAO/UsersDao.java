@@ -22,7 +22,7 @@ public class UsersDao {
     private String username = "root";
     private String passwd = "12345";
     
-    public String createPatientPrepared(Users userObj) {
+    public String createUserPrepared(Users userObj) {
         try {
             // Create Connection
             Connection con = DriverManager.getConnection(db_Url, username, passwd);
@@ -81,6 +81,7 @@ public class UsersDao {
             pst.setString(1, userUsername);
             ResultSet result = pst.executeQuery();
             Users userObj = new Users();
+            boolean flag=false;
             while (result.next()) {
                 userObj.setId(result.getInt("id"));
                 userObj.setFirstName(result.getString("firstName"));
@@ -89,13 +90,17 @@ public class UsersDao {
                 userObj.setEmail(result.getString("email"));
                 userObj.setRole(result.getString("role"));
                 userObj.setPassword(result.getString("password"));
+                flag=true;
             }
             con.close();
-            return userObj;
+            if(flag){
+                return userObj;
+            }
+            
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
         }
+        return null;
     }
     
     public String updateUserPrepared(Users userObj) {
@@ -103,7 +108,7 @@ public class UsersDao {
         try {
             Connection con = DriverManager.getConnection(db_Url, username, passwd);
             // Add Update query below
-            String SQLquery = "update patient set firstName=?,lastName=?,email=?,role=? where username=?;";
+            String SQLquery = "update users set firstName=?,lastName=?,email=?,role=? where username=?;";
             PreparedStatement pst = con.prepareStatement(SQLquery);
             pst.setString(1, userObj.getFirstName());
             pst.setString(2, userObj.getLastName());
@@ -132,7 +137,7 @@ public class UsersDao {
         String returnMsg = "";
         try {
             Connection con = DriverManager.getConnection(db_Url, username, passwd);
-            String SQLquery = "delete from patient where patient_id=?;";
+            String SQLquery = "delete from users where username=?;";
             PreparedStatement pst = con.prepareStatement(SQLquery);
             pst.setString(1, userObj.getUsername());
             int rowAffected = pst.executeUpdate();

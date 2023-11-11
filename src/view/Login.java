@@ -6,6 +6,7 @@
 package view;
 
 import DAO.UsersDao;
+import helpers.Helpers;
 import javafx.scene.control.PasswordField;
 import javax.swing.JOptionPane;
 import model.Users;
@@ -22,6 +23,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
     }
+    Helpers helperMethods = new Helpers();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -138,22 +140,50 @@ public class Login extends javax.swing.JFrame {
 
     private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
         // TODO add your handling code here:
-        String username = usernameField.getText().trim(); 
+        String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
-        
-        if( username.isEmpty() || password.isEmpty()){
+
+        if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(
                     this,
                     "All inputs are required",
                     "warning",
                     JOptionPane.WARNING_MESSAGE
             );
-        }else{
+        } else {
             UsersDao userDao = new UsersDao();
             Users daoResult = userDao.findUserRecord(username);
-            
-            JOptionPane.showMessageDialog(this, daoResult.getPassword());
+
+            if (daoResult.getPassword() != null) {
+                if (daoResult.getPassword().equals(password)) {
+                    System.out.println("-->" + daoResult.getRole() + "LOGIN");
+                    switch (daoResult.getRole()) {
+                        case "admin":
+                            helperMethods.navigateToAdminVeiw();
+                            break;
+                        case "cashier":
+                            helperMethods.navigateToCashierView();
+                            break;
+                        case "mechanic":
+                            helperMethods.navigateToMechanicVeiw();
+                            break;
+                        default:
+                            helperMethods.logout();
+                            break;
+                    }
+                    dispose();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid Credentials");
+                    helperMethods.logout();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "User not found");
+                helperMethods.logout();
+            }
+
         }
+
     }//GEN-LAST:event_submitBtnActionPerformed
 
     /**
@@ -184,7 +214,6 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Login().setVisible(true);

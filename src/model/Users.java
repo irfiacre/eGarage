@@ -21,8 +21,7 @@ public class Users {
     public Users() {
     }
 
-    public Users(Integer id, String firstName, String lastName, String username, String email, String role, String password) {
-        this.id = id;
+    public Users(String firstName, String lastName, String username, String email, String role, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
