@@ -26,21 +26,22 @@ public class CarsDao {
         try {
             // Create Connection
             Connection con = DriverManager.getConnection(db_Url, username, passwd);
-            String sql = "INSERT INTO cars(firstName,lastName,carname,email,role,password)"
-                    + "VALUES (?,?,?,?,?,?)";                        
+            String sql = "INSERT INTO cars(model,type,year,fault_description,owner_name,owner_email,status)"
+                    + "VALUES (?,?,?,?,?,?,?)";                        
             PreparedStatement pst = con.prepareStatement(sql);
-            pst.setString(1, carObj.getFirstName());
-            pst.setString(2, carObj.getLastName());
-            pst.setString(3, carObj.getCarname());
-            pst.setString(4, carObj.getEmail());
-            pst.setString(5, carObj.getRole());
-            pst.setString(6, carObj.getPassword());
+            pst.setString(1, carObj.getModel());
+            pst.setString(2, carObj.getType());
+            pst.setString(3, carObj.getYear());
+            pst.setString(4, carObj.getFault_description());
+            pst.setString(5, carObj.getOwner_name());
+            pst.setString(6, carObj.getOwner_email());
+            pst.setString(7, carObj.getStatus());
             int rowAffected = pst.executeUpdate();
             con.close();
             if (rowAffected >= 1) {
-                return "Car Created Successfuly!!";
+                return "Car Added Successfuly!!";
             } else {
-                return "Failed to create car!";
+                return "Failed to add car!";
             }
 
         } catch (Exception ex) {
@@ -51,7 +52,7 @@ public class CarsDao {
         
     public List<Cars> allCarRecords() {
         try {
-            Connection con = DriverManager.getConnection(db_Url, carname, passwd);
+            Connection con = DriverManager.getConnection(db_Url, username, passwd);
             String SQLquery = "select * from cars;";
             PreparedStatement pst = con.prepareStatement(SQLquery);
             ResultSet result = pst.executeQuery();
@@ -59,11 +60,13 @@ public class CarsDao {
             while (result.next()) {
                 Cars carObj = new Cars();
                 carObj.setId(result.getInt("id"));
-                carObj.setFirstName(result.getString("firstName"));
-                carObj.setLastName(result.getString("lastName"));
-                carObj.setCarname(result.getString("carname"));
-                carObj.setEmail(result.getString("email"));
-                carObj.setRole(result.getString("role"));
+                carObj.setModel(result.getString("model"));
+                carObj.setType(result.getString("type"));
+                carObj.setYear(result.getString("year"));
+                carObj.setFault_description(result.getString("fault_description"));
+                carObj.setOwner_name(result.getString("owner_name"));
+                carObj.setOwner_email(result.getString("owner_email"));
+                carObj.setStatus(result.getString("status"));
                 carRecords.add(carObj);
             }
             con.close();
@@ -73,23 +76,24 @@ public class CarsDao {
             return null;
         }
     }
-    public Cars findCarRecord(String carCarname) {
+    public Cars findCarRecord(String ownerName) {
         try {
-            Connection con = DriverManager.getConnection(db_Url, carname, passwd);
-            String SQLquery = "select * from cars where carname=?;";
+            Connection con = DriverManager.getConnection(db_Url, username, passwd);
+            String SQLquery = "select * from cars where owner_name=?;";
             PreparedStatement pst = con.prepareStatement(SQLquery);
-            pst.setString(1, carCarname);
+            pst.setString(1, ownerName);
             ResultSet result = pst.executeQuery();
             Cars carObj = new Cars();
             boolean flag=false;
             while (result.next()) {
                 carObj.setId(result.getInt("id"));
-                carObj.setFirstName(result.getString("firstName"));
-                carObj.setLastName(result.getString("lastName"));
-                carObj.setCarname(result.getString("carname"));
-                carObj.setEmail(result.getString("email"));
-                carObj.setRole(result.getString("role"));
-                carObj.setPassword(result.getString("password"));
+                carObj.setModel(result.getString("model"));
+                carObj.setType(result.getString("type"));
+                carObj.setYear(result.getString("year"));
+                carObj.setFault_description(result.getString("fault_description"));
+                carObj.setOwner_name(result.getString("owner_name"));
+                carObj.setOwner_email(result.getString("owner_email"));
+                carObj.setStatus(result.getString("status"));
                 flag=true;
             }
             con.close();
@@ -106,15 +110,20 @@ public class CarsDao {
     public String updateCarPrepared(Cars carObj) {
         String returnMsg = "";
         try {
-            Connection con = DriverManager.getConnection(db_Url, carname, passwd);
+            Connection con = DriverManager.getConnection(db_Url, username, passwd);
             // Add Update query below
-            String SQLquery = "update cars set firstName=?,lastName=?,email=?,role=? where carname=?;";
+            String SQLquery = "update cars set model=?,type=?,year=?,fault_description=?,owner_email=?,status=? where owner_name=?;";
             PreparedStatement pst = con.prepareStatement(SQLquery);
-            pst.setString(1, carObj.getFirstName());
-            pst.setString(2, carObj.getLastName());
-            pst.setString(3, carObj.getEmail());
-            pst.setString(4, carObj.getRole());
-            pst.setString(5, carObj.getCarname());
+            
+            pst.setString(1, carObj.getModel());
+            pst.setString(2, carObj.getType());
+            pst.setString(3, carObj.getYear());
+            pst.setString(4, carObj.getFault_description());
+            pst.setString(5, carObj.getOwner_email());
+            pst.setString(6, carObj.getStatus());
+            pst.setString(7, carObj.getOwner_name());
+
+            
             int rowAffected = pst.executeUpdate();
             con.close();
             if (rowAffected >= 1) {
@@ -131,15 +140,15 @@ public class CarsDao {
         return returnMsg;
     }
 
-    public String deletePatientPrepared(Cars carObj) {
-        /* This method Deletes a Patient's record from the Database records
+    public String deleteCarPrepared(Cars carObj) {
+        /* This method Deletes a Car's record from the Database records
         (Using Prepared Statement) */
         String returnMsg = "";
         try {
-            Connection con = DriverManager.getConnection(db_Url, carname, passwd);
-            String SQLquery = "delete from cars where carname=?;";
+            Connection con = DriverManager.getConnection(db_Url, username, passwd);
+            String SQLquery = "delete from cars where owner_name=?;";
             PreparedStatement pst = con.prepareStatement(SQLquery);
-            pst.setString(1, carObj.getCarname());
+            pst.setString(1, carObj.getOwner_name());
             int rowAffected = pst.executeUpdate();
             con.close();
             if (rowAffected >= 1) {

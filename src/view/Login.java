@@ -137,7 +137,10 @@ public class Login extends javax.swing.JFrame {
     private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameFieldActionPerformed
-
+    private void resetFields() {
+        usernameField.setText(" ");
+        passwordField.setText(" ");
+    }
     private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
         // TODO add your handling code here:
         String username = usernameField.getText().trim();
@@ -156,30 +159,29 @@ public class Login extends javax.swing.JFrame {
 
             if (daoResult.getPassword() != null) {
                 if (daoResult.getPassword().equals(password)) {
-                    System.out.println("-->" + daoResult.getRole() + "LOGIN");
                     switch (daoResult.getRole()) {
                         case "admin":
-                            helperMethods.navigateToAdminVeiw();
+                            helperMethods.navigateToAdminVeiw(daoResult.getUsername());
                             break;
                         case "cashier":
-                            helperMethods.navigateToCashierView();
+                            helperMethods.navigateToCashierView(daoResult.getUsername());
                             break;
                         case "mechanic":
-                            helperMethods.navigateToMechanicVeiw();
+                            helperMethods.navigateToMechanicVeiw(daoResult.getUsername());
                             break;
                         default:
-                            helperMethods.logout();
+                            resetFields();
                             break;
                     }
                     dispose();
 
                 } else {
                     JOptionPane.showMessageDialog(this, "Invalid Credentials");
-                    helperMethods.logout();
+                    resetFields();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "User not found");
-                helperMethods.logout();
+                resetFields();
             }
 
         }

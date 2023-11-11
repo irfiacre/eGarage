@@ -131,8 +131,8 @@ public class UsersDao {
         return returnMsg;
     }
 
-    public String deletePatientPrepared(Users userObj) {
-        /* This method Deletes a Patient's record from the Database records
+    public String deleteUserPrepared(Users userObj) {
+        /* This method Deletes a User's record from the Database records
         (Using Prepared Statement) */
         String returnMsg = "";
         try {

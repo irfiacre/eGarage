@@ -22,10 +22,19 @@ public class AdminVeiw extends javax.swing.JFrame {
     /**
      * Creates new form AdminVeiw
      */
+    private String username;
     public AdminVeiw() {
         initComponents();
         view_data();
     }
+
+    public AdminVeiw(String username) {
+        this.username = username;
+        initComponents();
+        view_data();
+        usernameLabel.setText(username);
+    }
+        
 
     Helpers helperMethods = new Helpers();
 
@@ -38,6 +47,8 @@ public class AdminVeiw extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -62,6 +73,9 @@ public class AdminVeiw extends javax.swing.JFrame {
         passwordTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         resetFields = new javax.swing.JButton();
+        usernameLabel = new javax.swing.JLabel();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(875, 620));
@@ -186,6 +200,9 @@ public class AdminVeiw extends javax.swing.JFrame {
             }
         });
 
+        usernameLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -229,13 +246,15 @@ public class AdminVeiw extends javax.swing.JFrame {
                     .addComponent(resetFields))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(60, 60, 60))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(54, Short.MAX_VALUE))))
+                        .addContainerGap(54, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(60, 60, 60))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(260, 260, 260)
                 .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,7 +265,9 @@ public class AdminVeiw extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addGap(28, 28, 28)
+                .addComponent(usernameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -287,7 +308,7 @@ public class AdminVeiw extends javax.swing.JFrame {
                             .addComponent(deleteBtn))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34))))
         );
@@ -439,7 +460,7 @@ public class AdminVeiw extends javax.swing.JFrame {
         } else {
             Users userObj = new Users(fname, lname, username, email, role, password);
             UsersDao dao = new UsersDao();
-            String daoResult = dao.deletePatientPrepared(userObj);
+            String daoResult = dao.deleteUserPrepared(userObj);
             JOptionPane.showMessageDialog(this, daoResult);
             resetFields();
             view_data();
@@ -498,7 +519,9 @@ public class AdminVeiw extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField lnameTextField;
     private javax.swing.JTextField passwordTextField;
@@ -508,6 +531,7 @@ public class AdminVeiw extends javax.swing.JFrame {
     private javax.swing.JButton searchBtn;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JButton updateBtn;
+    private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;
     private javax.swing.JTable usersTable;
     // End of variables declaration//GEN-END:variables

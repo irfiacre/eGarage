@@ -5,6 +5,14 @@
  */
 package view;
 
+import DAO.CarsDao;
+import helpers.Helpers;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Cars;
+
 /**
  *
  * @author busyDev
@@ -14,9 +22,21 @@ public class CashierVeiw extends javax.swing.JFrame {
     /**
      * Creates new form AdminVeiw
      */
+    private String username;
     public CashierVeiw() {
         initComponents();
+        view_data();
     }
+
+    public CashierVeiw(String username) {
+        this.username = username;
+        initComponents();
+        view_data();
+        
+    }
+        
+
+    Helpers helperMethods = new Helpers();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,31 +48,439 @@ public class CashierVeiw extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        searchTextField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        nameTextField = new javax.swing.JTextField();
+        emailTextField = new javax.swing.JTextField();
+        modelTextField = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        searchBtn = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        carsTable = new javax.swing.JTable();
+        refreshBtn = new javax.swing.JButton();
+        createBtn = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
+        yearTextField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        resetFields = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        descriptionTextArea = new javax.swing.JTextArea();
+        carStatus = new javax.swing.JLabel();
+        satusLabel = new javax.swing.JLabel();
+        typeTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setFocusableWindowState(false);
 
-        jLabel1.setText("Cashier View");
+        jLabel3.setText("Name");
+
+        jLabel4.setText("Email");
+
+        searchTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Model");
+
+        nameTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        emailTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        modelTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setText("Fault  Description");
+
+        jLabel9.setText("Type");
+
+        searchBtn.setText("Search by Owner Name");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("All Cars");
+
+        carsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Type", "Model", "Year", "Owner Name", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(carsTable);
+
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshBtn)))
+                .addGap(75, 75, 75))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(refreshBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79))
+        );
+
+        createBtn.setText("Add Car");
+        createBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBtnActionPerformed(evt);
+            }
+        });
+
+        updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        deleteBtn.setText("Delete");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+
+        yearTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel6.setText("Year");
+
+        resetFields.setText("Reset Fields");
+        resetFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetFieldsActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("Owner Details");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setText("Car Details");
+
+        descriptionTextArea.setColumns(20);
+        descriptionTextArea.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        descriptionTextArea.setRows(5);
+        descriptionTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane2.setViewportView(descriptionTextArea);
+
+        carStatus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        carStatus.setForeground(new java.awt.Color(0, 153, 0));
+
+        satusLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        satusLabel.setForeground(new java.awt.Color(51, 204, 0));
+        satusLabel.setText("    ");
+
+        typeTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(274, 274, 274)
-                .addComponent(jLabel1)
-                .addContainerGap(383, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(334, 334, 334)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(260, 260, 260)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchBtn))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resetFields)
+                            .addComponent(jLabel7)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(createBtn)
+                                .addGap(39, 39, 39)
+                                .addComponent(updateBtn)
+                                .addGap(36, 36, 36)
+                                .addComponent(deleteBtn))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel10)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(carStatus)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(satusLabel))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(typeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(modelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(53, 53, 53)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(53, 53, 53)
                 .addComponent(jLabel1)
-                .addContainerGap(461, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchBtn))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(resetFields)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(carStatus)
+                            .addComponent(satusLabel))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(typeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(modelTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(yearTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8)
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(createBtn)
+                            .addComponent(updateBtn)
+                            .addComponent(deleteBtn))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTextFieldActionPerformed
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        String searchText = searchTextField.getText().trim();
+
+        if (searchText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Owner name to search is required", "Required Field", JOptionPane.WARNING_MESSAGE);
+        } else {
+            CarsDao dao = new CarsDao();
+            Cars car = dao.findCarRecord(searchText);
+            if (car != null) {
+                nameTextField.setText(car.getFirstName());
+                emailTextField.setText(car.getLastName());
+                modelTextField.setText(car.getCarname());
+                modelTextField.setEnabled(false);
+                emailTextField.setText(car.getEmail());
+                yearTextField.setText(car.getPassword());
+                if (car.getRole().equals("cashier")) {
+                    this.typeComboBox.setSelectedIndex(1);
+
+                } else if (car.getRole().equals("mechanic")) {
+                    this.typeComboBox.setSelectedIndex(0);
+                } else {
+                    this.typeComboBox.setSelectedItem(null);
+                }
+                this.typeComboBox.setEnabled(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Car Doesn't exist");
+            }
+        }
+
+
+    }//GEN-LAST:event_searchBtnActionPerformed
+    private void resetFields() {
+        nameTextField.setText(" ");
+        emailTextField.setText(" ");
+        modelTextField.setText(" ");
+        typeTextField.setText(" ");
+        yearTextField.setText(" ");
+        descriptionTextArea.setText(" ");
+    }
+
+    private void createBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBtnActionPerformed
+        // TODO add your handling code here:
+        String name = nameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String type = typeTextField.getText().trim();
+        String model = modelTextField.getText().trim();
+        String year = yearTextField.getText().trim();
+        String description = descriptionTextArea.getText().trim();
+        String status = "pending";
+        
+        if (name.isEmpty()|| email.isEmpty() || type.isEmpty() || model.isEmpty()|| year.isEmpty()|| description.isEmpty() ) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "All Inputs are required",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            if (helperMethods.validateEmail(email)) {
+                Cars newCar = new Cars(fname, lname, carname, email, role, password);
+                CarsDao dao = new CarsDao();
+                String daoResult = dao.createCarPrepared(newCar);
+                JOptionPane.showMessageDialog(this, daoResult);
+                view_data();
+                resetFields();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "First Name must be 5 length ",
+                        "warning",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+
+        }
+    }//GEN-LAST:event_createBtnActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        // TODO add your handling code here:
+        view_data();
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        String fname = nameTextField.getText().trim();
+        String lname = emailTextField.getText().trim();
+        String carname = modelTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String password = yearTextField.getText().trim();
+        String role = this.typeComboBox.getSelectedItem().toString().toLowerCase();
+        if (fname.isEmpty() || lname.isEmpty() || carname.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "All Inputs are required",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            if (helperMethods.validateEmail(email)) {
+                Cars carObj = new Cars(fname, lname, carname, email, role, password);
+                CarsDao dao = new CarsDao();
+                String daoResult = dao.updateCarPrepared(carObj);
+                JOptionPane.showMessageDialog(this, daoResult);
+                view_data();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "First Name must be 5 length ",
+                        "warning",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+
+        }
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        String fname = nameTextField.getText().trim();
+        String lname = emailTextField.getText().trim();
+        String carname = modelTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String password = yearTextField.getText().trim();
+        String role = this.typeComboBox.getSelectedItem().toString().toLowerCase();
+        if (carname.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Carname is required",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            Cars carObj = new Cars(fname, lname, carname, email, role, password);
+            CarsDao dao = new CarsDao();
+            String daoResult = dao.deleteCarPrepared(carObj);
+            JOptionPane.showMessageDialog(this, daoResult);
+            resetFields();
+            view_data();
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
+    private void resetFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetFieldsActionPerformed
+        resetFields();
+    }//GEN-LAST:event_resetFieldsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -91,6 +519,64 @@ public class CashierVeiw extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel carStatus;
+    private javax.swing.JButton createBtn;
+    private javax.swing.JButton deleteBtn;
+    private javax.swing.JTextArea descriptionTextArea;
+    private javax.swing.JTextField emailTextField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField modelTextField;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton resetFields;
+    private javax.swing.JLabel satusLabel;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchTextField;
+    private javax.swing.JTextField typeTextField;
+    private javax.swing.JButton updateBtn;
+    private javax.swing.JTable carsTable;
+    private javax.swing.JTextField yearTextField;
     // End of variables declaration//GEN-END:variables
+
+    private void view_data() {
+        /* This methods syncs the display table's data with the database data */
+        CarsDao dao = new CarsDao();
+        List<Cars> cars = dao.allCarRecords();
+        Iterator iterator = cars.iterator();
+        DefaultTableModel tblModel = (DefaultTableModel) carsTable.getModel();
+        tblModel.setRowCount(0);
+
+        if (cars != null) {
+            for (Cars tempCar : cars) {
+                String type = tempCar.getType();
+                String model = tempCar.getModel();
+                String year = tempCar.getYear();
+                String name = tempCar.getOwner_name();
+                String status = tempCar.getStatus();
+
+                String tbData[] = {type, model, year, name, status};
+                tblModel.addRow(tbData);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No Data Found!",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
+    }
 }

@@ -5,12 +5,16 @@
  */
 package helpers;
 
+import DAO.CarsDao;
+import DAO.UsersDao;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import view.AdminVeiw;
 import view.CashierVeiw;
 import view.MechanicVeiw;
 import view.Login;
 import java.util.regex.*;
+import model.Cars;
+import model.Users;
 
 /**
  *
@@ -19,8 +23,8 @@ import java.util.regex.*;
 public class Helpers {
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =  Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    public void navigateToAdminVeiw() {
-        AdminVeiw adminFrame = new AdminVeiw();
+    public void navigateToAdminVeiw(String username) {
+        AdminVeiw adminFrame = new AdminVeiw(username);
         Login loginFrame = new Login();
         MechanicVeiw mechFrame = new MechanicVeiw();
         CashierVeiw cashFrame = new CashierVeiw();
@@ -31,11 +35,11 @@ public class Helpers {
         adminFrame.setVisible(true);
     }
 
-    public void navigateToCashierView() {
+    public void navigateToCashierView(String username) {
        AdminVeiw adminFrame = new AdminVeiw();
         Login loginFrame = new Login();
         MechanicVeiw mechFrame = new MechanicVeiw();
-        CashierVeiw cashFrame = new CashierVeiw();
+        CashierVeiw cashFrame = new CashierVeiw(username);
 
         loginFrame.setVisible(false);
         mechFrame.setVisible(false);
@@ -43,10 +47,11 @@ public class Helpers {
         adminFrame.setVisible(false);
     }
 
-    public void navigateToMechanicVeiw() {
+    public void navigateToMechanicVeiw(String username) {
         AdminVeiw adminFrame = new AdminVeiw();
         Login loginFrame = new Login();
         MechanicVeiw mechFrame = new MechanicVeiw();
+//        MechanicVeiw mechFrame = new MechanicVeiw(username);
         CashierVeiw cashFrame = new CashierVeiw();
 
         loginFrame.setVisible(false);
@@ -71,4 +76,16 @@ public class Helpers {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.matches();
 }
+    public Users findUser( String username){
+            UsersDao dao = new UsersDao();
+            Users user = dao.findUserRecord(username);
+            return user;
+    }
+    
+    public Cars findCar(String ownerName){
+            CarsDao dao = new CarsDao();
+            Cars car = dao.findCarRecord(ownerName);
+            
+            return car;
+    }
 }

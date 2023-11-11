@@ -5,6 +5,14 @@
  */
 package view;
 
+import DAO.UsersDao;
+import helpers.Helpers;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Users;
+
 /**
  *
  * @author busyDev
@@ -14,9 +22,21 @@ public class MechanicVeiw extends javax.swing.JFrame {
     /**
      * Creates new form AdminVeiw
      */
+    private String username;
     public MechanicVeiw() {
         initComponents();
+        view_data();
     }
+
+    public MechanicVeiw(String username) {
+        this.username = username;
+        initComponents();
+        view_data();
+        
+    }
+        
+
+    Helpers helperMethods = new Helpers();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,31 +48,415 @@ public class MechanicVeiw extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        searchTextField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        fnameTextField = new javax.swing.JTextField();
+        lnameTextField = new javax.swing.JTextField();
+        usernameTextField = new javax.swing.JTextField();
+        emailTextField = new javax.swing.JTextField();
+        roleComboBox = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        searchBtn = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        usersTable = new javax.swing.JTable();
+        refreshBtn = new javax.swing.JButton();
+        createBtn = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
+        passwordTextField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        resetFields = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setFocusableWindowState(false);
 
-        jLabel1.setText("Mechanic View");
+        jLabel3.setText("First Name");
+
+        jLabel4.setText("Last Name");
+
+        searchTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Username");
+
+        emailTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailTextFieldActionPerformed(evt);
+            }
+        });
+
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mechanic", "Cashier" }));
+        roleComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roleComboBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Email");
+
+        jLabel9.setText("Role");
+
+        searchBtn.setText("Search by username");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("All Users");
+
+        usersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Username", "Email", "Role"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(usersTable);
+
+        refreshBtn.setText("Refresh");
+        refreshBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(refreshBtn)))
+                .addGap(75, 75, 75))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(refreshBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79))
+        );
+
+        createBtn.setText("Add User");
+        createBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBtnActionPerformed(evt);
+            }
+        });
+
+        updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        deleteBtn.setText("Delete");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Password");
+
+        resetFields.setText("Reset Fields");
+        resetFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetFieldsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(252, 252, 252)
-                .addComponent(jLabel1)
-                .addContainerGap(397, Short.MAX_VALUE))
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGap(25, 25, 25)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel8)
+                                .addComponent(jLabel9))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(3, 3, 3)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(createBtn)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                                    .addComponent(updateBtn)
+                                    .addGap(36, 36, 36)
+                                    .addComponent(deleteBtn))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(resetFields))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(60, 60, 60))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(54, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(260, 260, 260)
+                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(53, 53, 53)
                 .addComponent(jLabel1)
-                .addContainerGap(474, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchBtn))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(resetFields)
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(fnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(lnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(createBtn)
+                            .addComponent(updateBtn)
+                            .addComponent(deleteBtn))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTextFieldActionPerformed
+
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailTextFieldActionPerformed
+
+    private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_roleComboBoxActionPerformed
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+        String searchText = searchTextField.getText().trim();
+
+        if (searchText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username to search is required", "Required Field", JOptionPane.WARNING_MESSAGE);
+        } else {
+            UsersDao dao = new UsersDao();
+            Users user = dao.findUserRecord(searchText);
+            if (user != null) {
+                fnameTextField.setText(user.getFirstName());
+                lnameTextField.setText(user.getLastName());
+                usernameTextField.setText(user.getUsername());
+                usernameTextField.setEnabled(false);
+                emailTextField.setText(user.getEmail());
+                passwordTextField.setText(user.getPassword());
+                if (user.getRole().equals("cashier")) {
+                    this.roleComboBox.setSelectedIndex(1);
+
+                } else if (user.getRole().equals("mechanic")) {
+                    this.roleComboBox.setSelectedIndex(0);
+                } else {
+                    this.roleComboBox.setSelectedItem(null);
+                }
+                this.roleComboBox.setEnabled(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "User Doesn't exist");
+            }
+        }
+
+
+    }//GEN-LAST:event_searchBtnActionPerformed
+    private void resetFields() {
+        fnameTextField.setText(" ");
+        lnameTextField.setText(" ");
+        usernameTextField.setText(" ");
+        usernameTextField.setEnabled(true);
+        emailTextField.setText(" ");
+        passwordTextField.setText(" ");
+        this.roleComboBox.setSelectedIndex(1);
+        this.roleComboBox.setEnabled(true);
+    }
+
+    private void createBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBtnActionPerformed
+        // TODO add your handling code here:
+        String fname = fnameTextField.getText().trim();
+        String lname = lnameTextField.getText().trim();
+        String username = usernameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String password = passwordTextField.getText().trim();
+        String role = this.roleComboBox.getSelectedItem().toString().toLowerCase();
+        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "All Inputs are required",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            if (helperMethods.validateEmail(email)) {
+                Users newUser = new Users(fname, lname, username, email, role, password);
+                UsersDao dao = new UsersDao();
+                String daoResult = dao.createUserPrepared(newUser);
+                JOptionPane.showMessageDialog(this, daoResult);
+                view_data();
+                resetFields();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "First Name must be 5 length ",
+                        "warning",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+
+        }
+    }//GEN-LAST:event_createBtnActionPerformed
+
+    private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
+        // TODO add your handling code here:
+        view_data();
+    }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+        String fname = fnameTextField.getText().trim();
+        String lname = lnameTextField.getText().trim();
+        String username = usernameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String password = passwordTextField.getText().trim();
+        String role = this.roleComboBox.getSelectedItem().toString().toLowerCase();
+        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "All Inputs are required",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            if (helperMethods.validateEmail(email)) {
+                Users userObj = new Users(fname, lname, username, email, role, password);
+                UsersDao dao = new UsersDao();
+                String daoResult = dao.updateUserPrepared(userObj);
+                JOptionPane.showMessageDialog(this, daoResult);
+                view_data();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "First Name must be 5 length ",
+                        "warning",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+
+        }
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        String fname = fnameTextField.getText().trim();
+        String lname = lnameTextField.getText().trim();
+        String username = usernameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String password = passwordTextField.getText().trim();
+        String role = this.roleComboBox.getSelectedItem().toString().toLowerCase();
+        if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Username is required",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        } else {
+            Users userObj = new Users(fname, lname, username, email, role, password);
+            UsersDao dao = new UsersDao();
+            String daoResult = dao.deleteUserPrepared(userObj);
+            JOptionPane.showMessageDialog(this, daoResult);
+            resetFields();
+            view_data();
+        }
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
+    private void resetFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetFieldsActionPerformed
+        resetFields();
+    }//GEN-LAST:event_resetFieldsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -81,6 +485,8 @@ public class MechanicVeiw extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -91,6 +497,59 @@ public class MechanicVeiw extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton createBtn;
+    private javax.swing.JButton deleteBtn;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JTextField fnameTextField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField lnameTextField;
+    private javax.swing.JTextField passwordTextField;
+    private javax.swing.JButton refreshBtn;
+    private javax.swing.JButton resetFields;
+    private javax.swing.JComboBox<String> roleComboBox;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchTextField;
+    private javax.swing.JButton updateBtn;
+    private javax.swing.JTextField usernameTextField;
+    private javax.swing.JTable usersTable;
     // End of variables declaration//GEN-END:variables
+
+    private void view_data() {
+        /* This methods syncs the display table's data with the database data */
+        UsersDao dao = new UsersDao();
+        List<Users> users = dao.allUserRecords();
+        Iterator iterator = users.iterator();
+        DefaultTableModel tblModel = (DefaultTableModel) usersTable.getModel();
+        tblModel.setRowCount(0);
+
+        if (users != null) {
+            for (Users tempUser : users) {
+                String userId = String.valueOf(tempUser.getId());
+                String name = tempUser.getFirstName() + " " + tempUser.getLastName();
+                String username = tempUser.getUsername();
+                String email = tempUser.getEmail();
+                String role = tempUser.getRole();
+
+                String tbData[] = {userId, name, username, email, role};
+                tblModel.addRow(tbData);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No Data Found!",
+                    "warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
+    }
 }
