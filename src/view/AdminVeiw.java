@@ -396,7 +396,7 @@ public class AdminVeiw extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(
                         this,
-                        "First Name must be 5 length ",
+                        "Invalid email address provided",
                         "warning",
                         JOptionPane.WARNING_MESSAGE
                 );

@@ -23,8 +23,7 @@ public class Cars {
     public Cars() {
     }
 
-    public Cars(Integer id, String model, String type, String year, String fault_description, String owner_name, String owner_email, String status) {
-        this.id = id;
+    public Cars(String model, String type, String year, String fault_description, String owner_name, String owner_email, String status) {
         this.model = model;
         this.type = type;
         this.year = year;

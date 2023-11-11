@@ -82,9 +82,9 @@ public class Helpers {
             return user;
     }
     
-    public Cars findCar(String ownerName){
+    public Cars findCar(Integer carId){
             CarsDao dao = new CarsDao();
-            Cars car = dao.findCarRecord(ownerName);
+            Cars car = dao.findCarRecord(carId);
             
             return car;
     }

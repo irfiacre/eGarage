@@ -5,13 +5,14 @@
  */
 package view;
 
-import DAO.UsersDao;
+import DAO.CarsDao;
 import helpers.Helpers;
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.Users;
+import model.Cars;
 
 /**
  *
@@ -20,9 +21,10 @@ import model.Users;
 public class MechanicVeiw extends javax.swing.JFrame {
 
     /**
-     * Creates new form AdminVeiw
+     * Creates new form MechanicVeiw
      */
     private String username;
+
     public MechanicVeiw() {
         initComponents();
         view_data();
@@ -32,9 +34,8 @@ public class MechanicVeiw extends javax.swing.JFrame {
         this.username = username;
         initComponents();
         view_data();
-        
+
     }
-        
 
     Helpers helperMethods = new Helpers();
 
@@ -52,58 +53,51 @@ public class MechanicVeiw extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        fnameTextField = new javax.swing.JTextField();
-        lnameTextField = new javax.swing.JTextField();
-        usernameTextField = new javax.swing.JTextField();
-        emailTextField = new javax.swing.JTextField();
-        roleComboBox = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         searchBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        usersTable = new javax.swing.JTable();
+        carsTable = new javax.swing.JTable();
         refreshBtn = new javax.swing.JButton();
-        createBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
-        deleteBtn = new javax.swing.JButton();
-        passwordTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         resetFields = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        carStatus = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        typeLabel = new javax.swing.JLabel();
+        modelLabel = new javax.swing.JLabel();
+        yearLabel = new javax.swing.JLabel();
+        descriptionLabel = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        statusComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel3.setText("First Name");
+        jLabel3.setText("Name");
 
-        jLabel4.setText("Last Name");
+        jLabel4.setText("Email");
 
+        searchTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         searchTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchTextFieldActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Username");
+        jLabel5.setText("Model");
 
-        emailTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailTextFieldActionPerformed(evt);
-            }
-        });
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setText("Change Car Status");
 
-        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mechanic", "Cashier" }));
-        roleComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                roleComboBoxActionPerformed(evt);
-            }
-        });
+        jLabel9.setText("Type");
 
-        jLabel8.setText("Email");
-
-        jLabel9.setText("Role");
-
-        searchBtn.setText("Search by username");
+        searchBtn.setText("Search by ID");
         searchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchBtnActionPerformed(evt);
@@ -111,25 +105,30 @@ public class MechanicVeiw extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("All Users");
+        jLabel2.setText("All Cars");
 
-        usersTable.setModel(new javax.swing.table.DefaultTableModel(
+        carsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Username", "Email", "Role"
+                "ID", "Type", "Model", "Year", "Owner Name", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(usersTable);
+        carsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                carsTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(carsTable);
 
         refreshBtn.setText("Refresh");
         refreshBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -145,12 +144,12 @@ public class MechanicVeiw extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(refreshBtn)))
-                .addGap(75, 75, 75))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,13 +163,6 @@ public class MechanicVeiw extends javax.swing.JFrame {
                 .addGap(79, 79, 79))
         );
 
-        createBtn.setText("Add User");
-        createBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createBtnActionPerformed(evt);
-            }
-        });
-
         updateBtn.setText("Update");
         updateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,14 +170,7 @@ public class MechanicVeiw extends javax.swing.JFrame {
             }
         });
 
-        deleteBtn.setText("Delete");
-        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteBtnActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setText("Password");
+        jLabel6.setText("Year");
 
         resetFields.setText("Reset Fields");
         resetFields.addActionListener(new java.awt.event.ActionListener() {
@@ -194,62 +179,101 @@ public class MechanicVeiw extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("Owner Details");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setText("Car Details");
+
+        carStatus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        carStatus.setForeground(new java.awt.Color(0, 153, 0));
+
+        statusLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        statusLabel.setForeground(new java.awt.Color(51, 204, 0));
+        statusLabel.setText("    ");
+
+        nameLabel.setText("   ");
+
+        emailLabel.setText("   ");
+
+        typeLabel.setText("   ");
+
+        modelLabel.setText("   ");
+
+        yearLabel.setText("    ");
+
+        descriptionLabel.setText("    ");
+        descriptionLabel.setAutoscrolls(true);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel11.setText("Fault  Description");
+
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "pending", "working on it", "can't be fixed", "fixed successfully", "needs more information" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
+                        .addGap(334, 334, 334)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(260, 260, 260)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchBtn))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(25, 25, 25)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel8)
-                                .addComponent(jLabel9))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(3, 3, 3)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(createBtn)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                                    .addComponent(updateBtn)
-                                    .addGap(36, 36, 36)
-                                    .addComponent(deleteBtn))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addComponent(resetFields))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(60, 60, 60))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(54, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(260, 260, 260)
-                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(118, 118, 118))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(59, 59, 59)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel10)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                                            .addComponent(carStatus)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(statusLabel))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(jLabel9)
+                                                    .addGap(16, 16, 16)))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(modelLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(yearLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))))
+                                    .addComponent(resetFields)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addGap(18, 18, 18))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addGap(21, 21, 21)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(nameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(emailLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)))
+                                    .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,44 +284,51 @@ public class MechanicVeiw extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchBtn))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
                         .addComponent(resetFields)
-                        .addGap(28, 28, 28)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(fnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(nameLabel))
+                        .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(lnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(emailLabel))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel10)
+                            .addComponent(carStatus)
+                            .addComponent(statusLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(emailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(roleComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
+                            .addComponent(typeLabel))
+                        .addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(createBtn)
-                            .addComponent(updateBtn)
-                            .addComponent(deleteBtn))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))))
+                            .addComponent(jLabel5)
+                            .addComponent(modelLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(yearLabel))
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(69, 69, 69))
         );
 
         pack();
@@ -307,90 +338,47 @@ public class MechanicVeiw extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
-    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailTextFieldActionPerformed
-
-    private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_roleComboBoxActionPerformed
-
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        String searchText = searchTextField.getText().trim();
-
-        if (searchText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username to search is required", "Required Field", JOptionPane.WARNING_MESSAGE);
+        Integer searchInput = Integer.parseInt(searchTextField.getText().trim());
+        if (searchTextField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Owner name to search is required", "Required Field", JOptionPane.WARNING_MESSAGE);
         } else {
-            UsersDao dao = new UsersDao();
-            Users user = dao.findUserRecord(searchText);
-            if (user != null) {
-                fnameTextField.setText(user.getFirstName());
-                lnameTextField.setText(user.getLastName());
-                usernameTextField.setText(user.getUsername());
-                usernameTextField.setEnabled(false);
-                emailTextField.setText(user.getEmail());
-                passwordTextField.setText(user.getPassword());
-                if (user.getRole().equals("cashier")) {
-                    this.roleComboBox.setSelectedIndex(1);
-
-                } else if (user.getRole().equals("mechanic")) {
-                    this.roleComboBox.setSelectedIndex(0);
+            CarsDao dao = new CarsDao();
+            Cars car = helperMethods.findCar(searchInput);
+            if (car != null) {
+                nameLabel.setText(car.getOwner_name());
+                emailLabel.setText(car.getOwner_email());
+                modelLabel.setText(car.getModel());
+                typeLabel.setText(car.getType());
+                yearLabel.setText(car.getYear());
+                descriptionLabel.setText(car.getFault_description());
+                if (car.getStatus().equals("pending")) {
+                    this.statusComboBox.setSelectedIndex(0);
+                } else if (car.getStatus().equals("working on it")) {
+                    this.statusComboBox.setSelectedIndex(1);
+                } else if (car.getStatus().equals("can't be fixed")) {
+                    this.statusComboBox.setSelectedIndex(2);
+                } else if (car.getStatus().equals("fixed successfully")) {
+                    this.statusComboBox.setSelectedIndex(3);
                 } else {
-                    this.roleComboBox.setSelectedItem(null);
+                    this.statusComboBox.setSelectedIndex(4);
                 }
-                this.roleComboBox.setEnabled(false);
             } else {
-                JOptionPane.showMessageDialog(this, "User Doesn't exist");
+                JOptionPane.showMessageDialog(this, "Car Doesn't exist");
             }
         }
 
 
     }//GEN-LAST:event_searchBtnActionPerformed
     private void resetFields() {
-        fnameTextField.setText(" ");
-        lnameTextField.setText(" ");
-        usernameTextField.setText(" ");
-        usernameTextField.setEnabled(true);
-        emailTextField.setText(" ");
-        passwordTextField.setText(" ");
-        this.roleComboBox.setSelectedIndex(1);
-        this.roleComboBox.setEnabled(true);
+        nameLabel.setText(" ");
+        emailLabel.setText(" ");
+        modelLabel.setText(" ");
+        typeLabel.setText(" ");
+        yearLabel.setText(" ");
+        descriptionLabel.setText(" ");
+        searchTextField.setText(" ");
     }
-
-    private void createBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBtnActionPerformed
-        // TODO add your handling code here:
-        String fname = fnameTextField.getText().trim();
-        String lname = lnameTextField.getText().trim();
-        String username = usernameTextField.getText().trim();
-        String email = emailTextField.getText().trim();
-        String password = passwordTextField.getText().trim();
-        String role = this.roleComboBox.getSelectedItem().toString().toLowerCase();
-        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() || email.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "All Inputs are required",
-                    "warning",
-                    JOptionPane.WARNING_MESSAGE
-            );
-        } else {
-            if (helperMethods.validateEmail(email)) {
-                Users newUser = new Users(fname, lname, username, email, role, password);
-                UsersDao dao = new UsersDao();
-                String daoResult = dao.createUserPrepared(newUser);
-                JOptionPane.showMessageDialog(this, daoResult);
-                view_data();
-                resetFields();
-            } else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "First Name must be 5 length ",
-                        "warning",
-                        JOptionPane.WARNING_MESSAGE
-                );
-            }
-
-        }
-    }//GEN-LAST:event_createBtnActionPerformed
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         // TODO add your handling code here:
@@ -398,65 +386,51 @@ public class MechanicVeiw extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-        String fname = fnameTextField.getText().trim();
-        String lname = lnameTextField.getText().trim();
-        String username = usernameTextField.getText().trim();
-        String email = emailTextField.getText().trim();
-        String password = passwordTextField.getText().trim();
-        String role = this.roleComboBox.getSelectedItem().toString().toLowerCase();
-        if (fname.isEmpty() || lname.isEmpty() || username.isEmpty() || email.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "All Inputs are required",
-                    "warning",
-                    JOptionPane.WARNING_MESSAGE
-            );
-        } else {
-            if (helperMethods.validateEmail(email)) {
-                Users userObj = new Users(fname, lname, username, email, role, password);
-                UsersDao dao = new UsersDao();
-                String daoResult = dao.updateUserPrepared(userObj);
-                JOptionPane.showMessageDialog(this, daoResult);
-                view_data();
-            } else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "First Name must be 5 length ",
-                        "warning",
-                        JOptionPane.WARNING_MESSAGE
-                );
-            }
+        String name = nameLabel.getText().trim();
+        String email = emailLabel.getText().trim();
+        String type = typeLabel.getText().trim();
+        String model = modelLabel.getText().trim();
+        String year = yearLabel.getText().trim();
+        String description = descriptionLabel.getText().trim();
+        String status = this.statusComboBox.getSelectedItem().toString().toLowerCase();
 
-        }
+        Cars carObj = new Cars(model, type, year, description, name, email, status);
+        CarsDao dao = new CarsDao();
+        String daoResult = dao.updateCarPrepared(carObj);
+        JOptionPane.showMessageDialog(this, daoResult);
+        view_data();
+
     }//GEN-LAST:event_updateBtnActionPerformed
-
-    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        String fname = fnameTextField.getText().trim();
-        String lname = lnameTextField.getText().trim();
-        String username = usernameTextField.getText().trim();
-        String email = emailTextField.getText().trim();
-        String password = passwordTextField.getText().trim();
-        String role = this.roleComboBox.getSelectedItem().toString().toLowerCase();
-        if (username.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Username is required",
-                    "warning",
-                    JOptionPane.WARNING_MESSAGE
-            );
-        } else {
-            Users userObj = new Users(fname, lname, username, email, role, password);
-            UsersDao dao = new UsersDao();
-            String daoResult = dao.deleteUserPrepared(userObj);
-            JOptionPane.showMessageDialog(this, daoResult);
-            resetFields();
-            view_data();
-        }
-    }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void resetFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetFieldsActionPerformed
         resetFields();
     }//GEN-LAST:event_resetFieldsActionPerformed
+
+    private void carsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_carsTableMouseClicked
+
+        DefaultTableModel tblModel = (DefaultTableModel) carsTable.getModel();
+        int row = carsTable.getSelectedRow();
+        Cars carObj = helperMethods.findCar(Integer.parseInt(tblModel.getValueAt(row, 0).toString()));
+
+        nameLabel.setText(carObj.getOwner_name());
+        emailLabel.setText(carObj.getOwner_email());
+        modelLabel.setText(carObj.getModel());
+        typeLabel.setText(carObj.getType());
+        yearLabel.setText(carObj.getYear());
+        descriptionLabel.setText(carObj.getFault_description());
+        if (carObj.getStatus().equals("pending")) {
+            this.statusComboBox.setSelectedIndex(0);
+        } else if (carObj.getStatus().equals("working on it")) {
+            this.statusComboBox.setSelectedIndex(1);
+        } else if (carObj.getStatus().equals("can't be fixed")) {
+            this.statusComboBox.setSelectedIndex(2);
+        } else if (carObj.getStatus().equals("fixed successfully")) {
+            this.statusComboBox.setSelectedIndex(3);
+        } else {
+            this.statusComboBox.setSelectedIndex(4);
+        }
+
+    }//GEN-LAST:event_carsTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -497,49 +471,53 @@ public class MechanicVeiw extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton createBtn;
-    private javax.swing.JButton deleteBtn;
-    private javax.swing.JTextField emailTextField;
-    private javax.swing.JTextField fnameTextField;
+    private javax.swing.JLabel carStatus;
+    private javax.swing.JTable carsTable;
+    private javax.swing.JLabel descriptionLabel;
+    private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField lnameTextField;
-    private javax.swing.JTextField passwordTextField;
+    private javax.swing.JLabel modelLabel;
+    private javax.swing.JLabel nameLabel;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton resetFields;
-    private javax.swing.JComboBox<String> roleComboBox;
     private javax.swing.JButton searchBtn;
     private javax.swing.JTextField searchTextField;
+    private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JLabel statusLabel;
+    private javax.swing.JLabel typeLabel;
     private javax.swing.JButton updateBtn;
-    private javax.swing.JTextField usernameTextField;
-    private javax.swing.JTable usersTable;
+    private javax.swing.JLabel yearLabel;
     // End of variables declaration//GEN-END:variables
 
     private void view_data() {
         /* This methods syncs the display table's data with the database data */
-        UsersDao dao = new UsersDao();
-        List<Users> users = dao.allUserRecords();
-        Iterator iterator = users.iterator();
-        DefaultTableModel tblModel = (DefaultTableModel) usersTable.getModel();
+        CarsDao dao = new CarsDao();
+        List<Cars> cars = dao.allCarRecords();
+        Iterator iterator = cars.iterator();
+        DefaultTableModel tblModel = (DefaultTableModel) carsTable.getModel();
         tblModel.setRowCount(0);
 
-        if (users != null) {
-            for (Users tempUser : users) {
-                String userId = String.valueOf(tempUser.getId());
-                String name = tempUser.getFirstName() + " " + tempUser.getLastName();
-                String username = tempUser.getUsername();
-                String email = tempUser.getEmail();
-                String role = tempUser.getRole();
-
-                String tbData[] = {userId, name, username, email, role};
+        if (cars != null) {
+            for (Cars tempCar : cars) {
+                String carId = String.valueOf(tempCar.getId());
+                String type = tempCar.getType();
+                String model = tempCar.getModel();
+                String year = tempCar.getYear();
+                String name = tempCar.getOwner_name();
+                String status = tempCar.getStatus();
+                String tbData[] = {carId, type, model, year, name, status};
                 tblModel.addRow(tbData);
             }
 

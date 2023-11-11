@@ -76,12 +76,12 @@ public class CarsDao {
             return null;
         }
     }
-    public Cars findCarRecord(String ownerName) {
+    public Cars findCarRecord(Integer carId) {
         try {
             Connection con = DriverManager.getConnection(db_Url, username, passwd);
-            String SQLquery = "select * from cars where owner_name=?;";
+            String SQLquery = "select * from cars where id=?;";
             PreparedStatement pst = con.prepareStatement(SQLquery);
-            pst.setString(1, ownerName);
+            pst.setInt(1, carId);
             ResultSet result = pst.executeQuery();
             Cars carObj = new Cars();
             boolean flag=false;

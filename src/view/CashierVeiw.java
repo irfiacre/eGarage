@@ -7,6 +7,7 @@ package view;
 
 import DAO.CarsDao;
 import helpers.Helpers;
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ public class CashierVeiw extends javax.swing.JFrame {
      * Creates new form AdminVeiw
      */
     private String username;
+
     public CashierVeiw() {
         initComponents();
         view_data();
@@ -32,9 +34,8 @@ public class CashierVeiw extends javax.swing.JFrame {
         this.username = username;
         initComponents();
         view_data();
-        
+
     }
-        
 
     Helpers helperMethods = new Helpers();
 
@@ -74,7 +75,7 @@ public class CashierVeiw extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         descriptionTextArea = new javax.swing.JTextArea();
         carStatus = new javax.swing.JLabel();
-        satusLabel = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
         typeTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -103,7 +104,7 @@ public class CashierVeiw extends javax.swing.JFrame {
 
         jLabel9.setText("Type");
 
-        searchBtn.setText("Search by Owner Name");
+        searchBtn.setText("Search by ID");
         searchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchBtnActionPerformed(evt);
@@ -118,11 +119,11 @@ public class CashierVeiw extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Type", "Model", "Year", "Owner Name", "Status"
+                "ID", "Type", "Model", "Year", "Owner Name", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -211,9 +212,9 @@ public class CashierVeiw extends javax.swing.JFrame {
         carStatus.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         carStatus.setForeground(new java.awt.Color(0, 153, 0));
 
-        satusLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        satusLabel.setForeground(new java.awt.Color(51, 204, 0));
-        satusLabel.setText("    ");
+        statusLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        statusLabel.setForeground(new java.awt.Color(51, 204, 0));
+        statusLabel.setText("    ");
 
         typeTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -259,7 +260,7 @@ public class CashierVeiw extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(carStatus)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(satusLabel))
+                                    .addComponent(statusLabel))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addComponent(jLabel9)
                                     .addGap(18, 18, 18)
@@ -307,7 +308,7 @@ public class CashierVeiw extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel10)
                             .addComponent(carStatus)
-                            .addComponent(satusLabel))
+                            .addComponent(statusLabel))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -340,29 +341,31 @@ public class CashierVeiw extends javax.swing.JFrame {
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        String searchText = searchTextField.getText().trim();
-
-        if (searchText.isEmpty()) {
+        Integer searchInput = Integer.parseInt(searchTextField.getText().trim());
+        if (searchTextField.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Owner name to search is required", "Required Field", JOptionPane.WARNING_MESSAGE);
         } else {
             CarsDao dao = new CarsDao();
-            Cars car = dao.findCarRecord(searchText);
+            Cars car = helperMethods.findCar(searchInput);
             if (car != null) {
-                nameTextField.setText(car.getFirstName());
-                emailTextField.setText(car.getLastName());
-                modelTextField.setText(car.getCarname());
-                modelTextField.setEnabled(false);
-                emailTextField.setText(car.getEmail());
-                yearTextField.setText(car.getPassword());
-                if (car.getRole().equals("cashier")) {
-                    this.typeComboBox.setSelectedIndex(1);
-
-                } else if (car.getRole().equals("mechanic")) {
-                    this.typeComboBox.setSelectedIndex(0);
+                nameTextField.setText(car.getOwner_name());
+                nameTextField.setEnabled(false);
+                emailTextField.setText(car.getOwner_email());
+                modelTextField.setText(car.getModel());
+                typeTextField.setText(car.getType());
+                yearTextField.setText(car.getYear());
+                descriptionTextArea.setText(car.getFault_description());
+                statusLabel.setText(car.getStatus());
+        
+                if (car.getStatus().equals("pending") || car.getStatus().equals("needs more information")) {
+                    statusLabel.setForeground(Color.yellow);
+                } else if (car.getStatus().equals("working on it")) {
+                    statusLabel.setForeground(Color.blue);
+                } else if (car.getStatus().equals("fixed")) {
+                    statusLabel.setForeground(Color.green);
                 } else {
-                    this.typeComboBox.setSelectedItem(null);
+                    statusLabel.setForeground(Color.red);
                 }
-                this.typeComboBox.setEnabled(false);
             } else {
                 JOptionPane.showMessageDialog(this, "Car Doesn't exist");
             }
@@ -377,6 +380,8 @@ public class CashierVeiw extends javax.swing.JFrame {
         typeTextField.setText(" ");
         yearTextField.setText(" ");
         descriptionTextArea.setText(" ");
+        searchTextField.setText(" ");
+        statusLabel.setText(" ");
     }
 
     private void createBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBtnActionPerformed
@@ -388,8 +393,8 @@ public class CashierVeiw extends javax.swing.JFrame {
         String year = yearTextField.getText().trim();
         String description = descriptionTextArea.getText().trim();
         String status = "pending";
-        
-        if (name.isEmpty()|| email.isEmpty() || type.isEmpty() || model.isEmpty()|| year.isEmpty()|| description.isEmpty() ) {
+
+        if (name.isEmpty() || email.isEmpty() || type.isEmpty() || model.isEmpty() || year.isEmpty() || description.isEmpty()) {
             JOptionPane.showMessageDialog(
                     this,
                     "All Inputs are required",
@@ -398,16 +403,16 @@ public class CashierVeiw extends javax.swing.JFrame {
             );
         } else {
             if (helperMethods.validateEmail(email)) {
-                Cars newCar = new Cars(fname, lname, carname, email, role, password);
+                Cars carObj = new Cars(model, type, year, description, name, email, status);
                 CarsDao dao = new CarsDao();
-                String daoResult = dao.createCarPrepared(newCar);
+                String daoResult = dao.createCarPrepared(carObj);
                 JOptionPane.showMessageDialog(this, daoResult);
                 view_data();
                 resetFields();
             } else {
                 JOptionPane.showMessageDialog(
                         this,
-                        "First Name must be 5 length ",
+                        "Invalid Email address",
                         "warning",
                         JOptionPane.WARNING_MESSAGE
                 );
@@ -422,13 +427,15 @@ public class CashierVeiw extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshBtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-        String fname = nameTextField.getText().trim();
-        String lname = emailTextField.getText().trim();
-        String carname = modelTextField.getText().trim();
+        String name = nameTextField.getText().trim();
         String email = emailTextField.getText().trim();
-        String password = yearTextField.getText().trim();
-        String role = this.typeComboBox.getSelectedItem().toString().toLowerCase();
-        if (fname.isEmpty() || lname.isEmpty() || carname.isEmpty() || email.isEmpty()) {
+        String type = typeTextField.getText().trim();
+        String model = modelTextField.getText().trim();
+        String year = yearTextField.getText().trim();
+        String description = descriptionTextArea.getText().trim();
+        String status = "pending";
+
+        if (name.isEmpty() || email.isEmpty() || type.isEmpty() || model.isEmpty() || year.isEmpty() || description.isEmpty()) {
             JOptionPane.showMessageDialog(
                     this,
                     "All Inputs are required",
@@ -437,44 +444,57 @@ public class CashierVeiw extends javax.swing.JFrame {
             );
         } else {
             if (helperMethods.validateEmail(email)) {
-                Cars carObj = new Cars(fname, lname, carname, email, role, password);
+                Cars carObj = new Cars(model, type, year, description, name, email, status);
                 CarsDao dao = new CarsDao();
                 String daoResult = dao.updateCarPrepared(carObj);
                 JOptionPane.showMessageDialog(this, daoResult);
                 view_data();
+                resetFields();
             } else {
                 JOptionPane.showMessageDialog(
                         this,
-                        "First Name must be 5 length ",
+                        "Owner's Name must be 5 length ",
                         "warning",
                         JOptionPane.WARNING_MESSAGE
                 );
             }
-
         }
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        String fname = nameTextField.getText().trim();
-        String lname = emailTextField.getText().trim();
-        String carname = modelTextField.getText().trim();
+        String name = nameTextField.getText().trim();
         String email = emailTextField.getText().trim();
-        String password = yearTextField.getText().trim();
-        String role = this.typeComboBox.getSelectedItem().toString().toLowerCase();
-        if (carname.isEmpty()) {
+        String type = typeTextField.getText().trim();
+        String model = modelTextField.getText().trim();
+        String year = yearTextField.getText().trim();
+        String description = descriptionTextArea.getText().trim();
+        String status = "pending";
+
+        if (name.isEmpty()) {
             JOptionPane.showMessageDialog(
                     this,
-                    "Carname is required",
+                    "All Inputs are required",
                     "warning",
                     JOptionPane.WARNING_MESSAGE
             );
         } else {
-            Cars carObj = new Cars(fname, lname, carname, email, role, password);
-            CarsDao dao = new CarsDao();
-            String daoResult = dao.deleteCarPrepared(carObj);
-            JOptionPane.showMessageDialog(this, daoResult);
-            resetFields();
-            view_data();
+            int confirmInt = JOptionPane.showConfirmDialog(this, "Are sure you want to delete");
+
+            if (confirmInt == 0) {
+                Cars carObj = new Cars(model, type, year, description, name, email, status);
+                CarsDao dao = new CarsDao();
+                String daoResult = dao.deleteCarPrepared(carObj);
+                JOptionPane.showMessageDialog(this, daoResult);
+                view_data();
+                resetFields();
+            } else {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Owner's Name must be 5 length ",
+                        "warning",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
@@ -520,6 +540,7 @@ public class CashierVeiw extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel carStatus;
+    private javax.swing.JTable carsTable;
     private javax.swing.JButton createBtn;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JTextArea descriptionTextArea;
@@ -541,12 +562,11 @@ public class CashierVeiw extends javax.swing.JFrame {
     private javax.swing.JTextField nameTextField;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton resetFields;
-    private javax.swing.JLabel satusLabel;
     private javax.swing.JButton searchBtn;
     private javax.swing.JTextField searchTextField;
+    private javax.swing.JLabel statusLabel;
     private javax.swing.JTextField typeTextField;
     private javax.swing.JButton updateBtn;
-    private javax.swing.JTable carsTable;
     private javax.swing.JTextField yearTextField;
     // End of variables declaration//GEN-END:variables
 
@@ -560,13 +580,13 @@ public class CashierVeiw extends javax.swing.JFrame {
 
         if (cars != null) {
             for (Cars tempCar : cars) {
+                String carId = String.valueOf(tempCar.getId());
                 String type = tempCar.getType();
                 String model = tempCar.getModel();
                 String year = tempCar.getYear();
                 String name = tempCar.getOwner_name();
                 String status = tempCar.getStatus();
-
-                String tbData[] = {type, model, year, name, status};
+                String tbData[] = {carId, type, model, year, name, status};
                 tblModel.addRow(tbData);
             }
 
