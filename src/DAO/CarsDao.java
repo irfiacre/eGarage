@@ -164,6 +164,23 @@ public class CarsDao {
 
         return returnMsg;
     }
-        
+    
+    public Integer getCarsCount() {
+        try {
+            Connection con = DriverManager.getConnection(db_Url, username, passwd);
+            String SQLquery = "select count(*) from cars;";
+            PreparedStatement pst = con.prepareStatement(SQLquery);
+            ResultSet result = pst.executeQuery();
+            Cars carObj = new Cars();
+            Integer carsCount =0;
+            while (result.next()) {
+                carsCount = result.getInt(1);
+            }
+            return carsCount;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
     
 }
