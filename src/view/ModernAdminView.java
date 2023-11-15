@@ -297,7 +297,7 @@ public class ModernAdminView extends javax.swing.JFrame {
         UserManagementVeiw.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         roleComboBox.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mechanic", "Cashier" }));
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mechanic", "Cashier", "Admin" }));
         roleComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(245, 245, 245)));
         UserManagementVeiw.add(roleComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(189, 386, 218, 37));
 
@@ -566,6 +566,8 @@ public class ModernAdminView extends javax.swing.JFrame {
 
                 } else if (user.getRole().equals("mechanic")) {
                     this.roleComboBox.setSelectedIndex(0);
+                }else if (user.getRole().equals("admin")) {
+                    this.roleComboBox.setSelectedIndex(2);
                 } else {
                     this.roleComboBox.setSelectedItem(null);
                 }
@@ -605,6 +607,36 @@ public class ModernAdminView extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ModernAdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
