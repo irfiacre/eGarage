@@ -8,10 +8,10 @@ package helpers;
 import DAO.CarsDao;
 import DAO.UsersDao;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
-import view.AdminVeiw;
-import view.CashierVeiw;
-import view.MechanicVeiw;
-import view.Login;
+import view.ModernAdminView;
+import view.ModernCashierView;
+import view.ModernMechanicView;
+import view.ModernLoginView;
 import java.util.regex.*;
 import model.Cars;
 import model.Users;
@@ -23,11 +23,11 @@ import model.Users;
 public class Helpers {
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =  Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    public void navigateToAdminVeiw(String username) {
-        AdminVeiw adminFrame = new AdminVeiw(username);
-        Login loginFrame = new Login();
-        MechanicVeiw mechFrame = new MechanicVeiw();
-        CashierVeiw cashFrame = new CashierVeiw();
+    public void navigateToModernAdminView(String username) {
+        ModernAdminView adminFrame = new ModernAdminView(username);
+        ModernLoginView loginFrame = new ModernLoginView();
+        ModernMechanicView mechFrame = new ModernMechanicView();
+        ModernCashierView cashFrame = new ModernCashierView();
 
         loginFrame.setVisible(false);
         mechFrame.setVisible(false);
@@ -35,11 +35,11 @@ public class Helpers {
         adminFrame.setVisible(true);
     }
 
-    public void navigateToCashierView(String username) {
-       AdminVeiw adminFrame = new AdminVeiw();
-        Login loginFrame = new Login();
-        MechanicVeiw mechFrame = new MechanicVeiw();
-        CashierVeiw cashFrame = new CashierVeiw(username);
+    public void navigateToModernCashierView(String username) {
+       ModernAdminView adminFrame = new ModernAdminView();
+        ModernLoginView loginFrame = new ModernLoginView();
+        ModernMechanicView mechFrame = new ModernMechanicView();
+        ModernCashierView cashFrame = new ModernCashierView(username);
 
         loginFrame.setVisible(false);
         mechFrame.setVisible(false);
@@ -47,12 +47,11 @@ public class Helpers {
         adminFrame.setVisible(false);
     }
 
-    public void navigateToMechanicVeiw(String username) {
-        AdminVeiw adminFrame = new AdminVeiw();
-        Login loginFrame = new Login();
-        MechanicVeiw mechFrame = new MechanicVeiw();
-//        MechanicVeiw mechFrame = new MechanicVeiw(username);
-        CashierVeiw cashFrame = new CashierVeiw();
+    public void navigateToModernMechanicView(String username) {
+        ModernAdminView adminFrame = new ModernAdminView();
+        ModernLoginView loginFrame = new ModernLoginView();
+        ModernMechanicView mechFrame = new ModernMechanicView(username);
+        ModernCashierView cashFrame = new ModernCashierView();
 
         loginFrame.setVisible(false);
         mechFrame.setVisible(true);
@@ -61,10 +60,10 @@ public class Helpers {
     }
 
     public void logout() {
-        AdminVeiw adminFrame = new AdminVeiw();
-        Login loginFrame = new Login();
-        MechanicVeiw mechFrame = new MechanicVeiw();
-        CashierVeiw cashFrame = new CashierVeiw();
+        ModernAdminView adminFrame = new ModernAdminView();
+        ModernLoginView loginFrame = new ModernLoginView();
+        ModernMechanicView mechFrame = new ModernMechanicView();
+        ModernCashierView cashFrame = new ModernCashierView();
 
         loginFrame.setVisible(true);
         mechFrame.setVisible(false);

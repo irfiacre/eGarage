@@ -161,13 +161,13 @@ public class Login extends javax.swing.JFrame {
                 if (daoResult.getPassword().equals(password)) {
                     switch (daoResult.getRole()) {
                         case "admin":
-                            helperMethods.navigateToAdminVeiw(daoResult.getUsername());
+                            helperMethods.navigateToModernAdminView(daoResult.getUsername());
                             break;
                         case "cashier":
-                            helperMethods.navigateToCashierView(daoResult.getUsername());
+                            helperMethods.navigateToModernCashierView(daoResult.getUsername());
                             break;
                         case "mechanic":
-                            helperMethods.navigateToMechanicVeiw(daoResult.getUsername());
+                            helperMethods.navigateToModernMechanicView(daoResult.getUsername());
                             break;
                         default:
                             resetFields();
